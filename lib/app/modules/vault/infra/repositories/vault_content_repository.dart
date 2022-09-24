@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:vault_manager/app/modules/vault/domain/entities/vault_content_entity.dart';
 import 'package:vault_manager/app/modules/vault/domain/errors/vault_content_errors.dart';
 import 'package:vault_manager/app/modules/vault/infra/adapters/vault_content_adapter.dart';
@@ -10,13 +11,14 @@ class VaultContentRepository implements IVaultContentRepository {
 
   VaultContentRepository(this._vaultContentDatasource);
   @override
-  Future<List<VaultContentEntity>> getVaultContent() async {
+  Future<Either<VaultContentErrors, List<VaultContentEntity>>>
+      getVaultContent() async {
     try {
       final result = await _vaultContentDatasource.getVaultList();
       final convert = result.map((data) => VaultContentAdapter.fromJson(data));
-      return convert.toList();
+      return Right(convert.toList());
     } catch (e) {
-      throw VaultContentErrorEmpityList();
+      return Left(VaultContentErrorEmpityList());
     }
   }
 }

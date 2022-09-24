@@ -14,14 +14,14 @@ class VaultContentFirestoreDatasource implements VaultContentDatasource {
       if (_user.currentUser!.uid.isEmpty) {
         throw VaultContentErrorUserNotFound();
       }
-      final snapshot = await _firebaseFirestore
+      final future = await _firebaseFirestore
           .collection('Users')
           .doc(_user.currentUser?.uid)
           .collection('vault-passwords')
           .get();
 
       final data =
-          snapshot.docs.map((value) => value.data()).map((map) => map).toList();
+          future.docs.map((value) => value.data()).map((map) => map).toList();
       return data;
     } catch (e) {
       throw VaultContentErrorGeneric();

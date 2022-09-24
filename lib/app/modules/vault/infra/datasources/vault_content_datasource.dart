@@ -1,3 +1,3 @@
 abstract class VaultContentDatasource {
-  Future<List<Map>> getVaultList();
+  Future<List<dynamic>> getVaultList();
 }
